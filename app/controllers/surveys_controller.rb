@@ -1,10 +1,16 @@
 class SurveysController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:list], raise: false
   before_action :set_survey, only: [:show, :edit, :update, :destroy]
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:list]
   # GET /surveys
   # GET /surveys.json
   def index
     @surveys = Survey.all
+  end
+
+  def list
+    @surveys = Survey.all
+    render json: {status: 'SUCCESS', message: 'Loaded all Surveys', data: @surveys}, status: :ok
   end
 
   # GET /surveys/1
@@ -70,6 +76,6 @@ class SurveysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def survey_params
-      params.require(:survey).permit(:name, :questions_attributes =>  [:id, :content, :_destroy, :answers_attributes => [:id, :content, :_destroy]])
+      params.require(:survey).permit(:name, :questions_attributes =>  [:id, :content, :_destroy])
     end
 end

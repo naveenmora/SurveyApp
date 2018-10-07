@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  resources :surveys
+  resources :surveys do
+  collection do
+    get 'list'
+  end
+  end
   resources :questions do
-  	resources :answers
+    resources :answers
   end
 
   get 'home/index'
