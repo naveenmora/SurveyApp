@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   enum role: [:survey_taker, :survey_admin]
   after_initialize :set_default_role, :if => :new_record?
-
+  has_many :answers
   def set_default_role
     self.role ||= :survey_taker
   end
